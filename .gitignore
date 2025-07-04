@@ -1,0 +1,14 @@
+# Ignorer les fichiers sensibles et inutiles pour GitHub
+.env
+/config/database.php
+/node_modules/
+vendor/
+*.log
+*.sql
+*.sqlite
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+htdocs/
+*.bak

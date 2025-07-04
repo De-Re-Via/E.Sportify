@@ -1,0 +1,231 @@
+
+/* Responsive - mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    position: static;
+    margin-bottom: 0.5rem;
+    transform: scale(1.5);
+  }
+
+  .site-title {
+    display: none;
+  }
+
+  .main-nav {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.85);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+  }
+
+  .main-nav.show {
+    display: flex;
+  }
+
+  .burger {
+    display: block;
+    cursor: pointer;
+    font-size: 2rem;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 10;
+  }
+
+  .chrono-banner {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem auto 1rem auto;
+    background: yellow;
+    color: black;
+    font-weight: bold;
+    border-radius: 0;
+    border-top: 5px solid white;
+    border-left: 5px solid white;
+    border-style: outset;
+    box-sizing: border-box;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .event-principal { order: 1; }
+  .actualites { order: 2; }
+  .evenements { order: 3; }
+  .galerie { order: 4; }
+  .left-info { order: 5; }
+
+  main > section,
+  main > aside {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .cards {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  footer {
+    padding: 1rem 0.5rem;
+  }
+
+  footer .socials {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  footer .socials img {
+    width: 30px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Responsive - tablette (max-width: 992px) */
+@media (max-width: 992px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 1rem;
+  }
+
+  .logo {
+    position: static;
+    margin-bottom: 0.5rem;
+    transform: scale(1.2);
+    display: inline-block;
+  }
+
+  .site-title {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 2rem;
+    cursor: pointer;
+    color: white;
+  }
+
+  .main-nav {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    left: 0;
+    z-index: 999;
+  }
+
+  .main-nav.show {
+    display: flex;
+  }
+
+  .main-nav a {
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: white;
+    text-decoration: none;
+  }
+
+  .chrono-banner {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem auto 1rem auto;
+    background: yellow;
+    color: black;
+    font-weight: bold;
+    border-radius: 0;
+    border-top: 5px solid white;
+    border-left: 5px solid white;
+    border-style: outset;
+    box-sizing: border-box;
+  }
+
+  .event-principal { order: 1; }
+  .actualites { order: 2; }
+  .evenements { order: 3; }
+  .galerie { order: 4; }
+  .left-info { order: 5; }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  main > section,
+  main > aside {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .cards {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .card {
+    flex: 1 1 45%;
+  }
+
+  footer {
+    padding: 1rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  footer .socials img {
+    width: 28px;
+    margin: 0 0.4rem;
+  }
+}
+
+/* Desktop - masquer burger */
+@media (min-width: 993px) {
+  .burger {
+    display: none;
+  }
+
+  .main-nav {
+    display: flex !important;
+    position: absolute;
+    right: 2rem;
+    top: auto;
+    background: none;
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+}

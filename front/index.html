@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E.Sportify</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+    <!-- BOOTSTRAP CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <!-- Vidéo de fond -->
+    <video class="bg-video" autoplay muted loop playsinline>
+      <source src="/front/assets/videos/NeonCloud.mp4" type="video/mp4" />
+      Votre navigateur ne supporte pas la vidéo HTML5.
+    </video>
+
+    <!-- Barre de navigation -->
+    <header>
+      <div class="logo">E.S</div>
+      <h1 class="site-title">E.SPORTIFY</h1>
+      <nav class="main-nav" id="mainNav">
+        <!-- Liens injectés dynamiquement -->
+      </nav>
+      <div class="burger" onclick="toggleMenu()">☰</div>
+    </header>
+
+
+    <!-- Chrono -->
+    <section class="chrono-banner">
+      <div id="countdown">1 mois : 5 j : 15 h : 10 min : 12 s</div>
+    </section>
+
+    <!-- Contenu principal -->
+    <main>
+      <aside class="left-info neon-background">
+        <h2>A PROPOS...</h2>
+          <div><p>
+          Fondée le 17 mars 2021 en France, <strong>Esportify</strong> est une startup innovante dédiée à la promotion du <em>e-sport</em> et à l’organisation de compétitions de jeux vidéo.
+          Depuis ses débuts, Esportify s’est imposée comme un acteur dynamique de la scène e-sportive, en créant des événements sur mesure pour les passionnés de gaming.
+          </p>
+          <p>
+          Vous voici sur notre nouvelle <strong>plateforme en ligne sur mesure</strong> qui permettra :
+          </p>
+              <ul>
+                  <li>aux joueurs de s’inscrire facilement aux tournois et compétitions,</li>
+                  <li>de suivre leurs performances et statistiques personnelles,</li>
+                  <li>d’échanger avec d’autres membres de la communauté,</li>
+                  <li>et de vivre une expérience e-sport enrichie et interactive.</li>
+              </ul>
+          <p>
+          Ce projet ambitieux marque une nouvelle étape dans l’histoire de notre aventure immersive du <em>e-sport</em>.
+          </p>
+          <p>
+          <strong>Bienvenue dans l’aventure Esportify – l’e-sport, réinventé.</strong>
+          </p></div>
+
+      </aside>
+
+      <section class="event-principal neon-border">
+        <h2>PROCHAINEMENT</h2>
+        <img src="assets/events/event01.jpg" alt="Événement principal" />
+      </section>
+
+      <aside class="actualites neon-background">
+        <h2>ACTU</h2>
+        <div class="cards">
+          <div class="card"><img src="assets/events/event02.jpg" alt="Actu" /></div>
+          <div class="card"><img src="assets/events/event03.jpg" alt="Actu" /></div>
+          <div class="card"><img src="assets/events/event04.jpg" alt="Actu" /></div>
+        </div>
+      </aside>
+
+      <section class="galerie neon-border">
+          <h2></h2>
+          <div id="carouselExample" class="carousel slide">
+              <div class="carousel-inner">
+                  <div class="carousel-item active">
+                  <img src="assets/gallerie/g1.jpg" alt="Actu" />
+                  </div>
+                  <div class="carousel-item">
+                  <img src="assets/gallerie/g1.jpg" alt="Actu" />
+                  </div>
+                  <div class="carousel-item">
+                  <img src="assets/gallerie/g1.jpg" alt="Actu" />
+                  </div>
+                  <div class="carousel-item">
+                  <img src="assets/gallerie/g1.jpg" alt="Actu" />
+                  </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+              </button>
+          </div>
+      </section>
+
+
+      <section class="evenements neon-background">
+        <h2>SOON...</h2>
+        <div class="cards">
+          <div class="card"><img src="assets/events/event02.jpg" alt="EventToCome" /></div>
+          <div class="card"><img src="assets/events/event03.jpg" alt="EventToCome" /></div>
+          <div class="card"><img src="assets/events/event04.jpg" alt="EventToCome" /></div>
+          <div class="card"><img src="assets/events/event04.jpg" alt="EventToCome" /></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+      <div class="socials">
+        <a href="#"><img src="assets/images/twitter.png" alt="Twitter" /></a>
+        <a href="#"><img src="assets/images/intagram.png" alt="Instagram" /></a>
+        <a href="#"><img src="assets/images/facebook.png" alt="Facebook" /></a>
+        <a href="#"><img src="assets/images/messenger.png" alt="Messenger" /></a>
+      </div>
+      <br><p>E.SPORTIFY</p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/navbar.js"></script>
+    <script src="assets/js/login.js"></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- MODAL UNIQUE CONNEXION/INSCRIPTION -->
+    <div id="authModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+
+        <!-- Onglets -->
+        <div class="tabs">
+          <button onclick="showTab('login')" id="loginTab" class="active">Connexion</button>
+          <button onclick="showTab('register')" id="registerTab">Inscription</button>
+        </div>
+
+        <!-- Formulaire de connexion -->
+        <form id="loginForm" class="auth-form">
+          <h2>Connexion</h2>
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Mot de passe" required />
+          <button type="submit">Se connecter</button>
+        </form>
+
+        <!-- Formulaire d'inscription -->
+        <form id="registerForm" class="auth-form hidden">
+          <h2>Inscription</h2>
+          <input type="text" name="username" placeholder="Pseudo" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" id="password" name="password" placeholder="Mot de passe" required />
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmer le mot de passe" required />
+          <p id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</p>
+          <button type="submit">S’inscrire</button>
+        </form>
+
+
+
+
+
+      </div>
+    </div>
+
+
+  </body>
+</html>
