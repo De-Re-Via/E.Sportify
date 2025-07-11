@@ -1,8 +1,10 @@
+// dashboard.js - version stable validée
+// Gère la création d'événement, le dashboard dynamique et la modale points
 
-// ✅ Chargement du contenu PHP dynamiquement dans la section HTML
+let soumissionEnCours = false;
+
 document.addEventListener("DOMContentLoaded", async () => {
   const content = document.getElementById("dashboardContent");
-
   try {
     const response = await fetch("/esportify/back/pages/dashboard.php");
     const html = await response.text();
@@ -12,7 +14,50 @@ document.addEventListener("DOMContentLoaded", async () => {
     content.innerHTML = "<p>Erreur chargement dashboard.</p>";
     console.error("Erreur JS :", err);
   }
+
+  const eventForm = document.getElementById("eventForm");
+  if (eventForm) {
+    eventForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (soumissionEnCours) return;
+      soumissionEnCours = true;
+
+      const formData = new FormData(eventForm);
+      try {
+        const res = await fetch("/esportify/back/controllers/create_event.php", {
+          method: "POST",
+          body: formData
+        });
+        const text = await res.text();
+        console.log("Réponse création :", text);
+        if (res.ok) {
+          alert("Événement proposé avec succès.");
+          closeEventModal();
+          eventForm.reset();
+          await actualiserDashboard();
+        } else {
+          alert("Erreur création : " + text);
+        }
+      } catch (err) {
+        alert("Erreur JS : " + err.message);
+      } finally {
+        soumissionEnCours = false;
+      }
+    });
+  }
 });
+
+async function actualiserDashboard() {
+  try {
+    const res = await fetch("/esportify/back/pages/dashboard.php");
+    const html = await res.text();
+    const container = document.getElementById("dashboardContent");
+    container.innerHTML = html;
+    activerAttributionPoints();
+  } catch (err) {
+    console.error("Erreur rechargement dashboard :", err);
+  }
+}
 
 function activerAttributionPoints() {
   const buttons = document.querySelectorAll("button[onclick^='openPointsModal']");
@@ -30,7 +75,6 @@ function openPointsModal(id_event) {
     .then(data => {
       const container = document.getElementById("playersList");
       container.innerHTML = "";
-
       if (!data || data.length === 0) {
         container.innerHTML = "<p>Aucun participant.</p>";
       } else {
@@ -48,7 +92,6 @@ function openPointsModal(id_event) {
           `;
         });
       }
-
       document.getElementById("pointsModal").style.display = "flex";
     });
 }
@@ -68,3 +111,12 @@ function calculerPoints(input, userId) {
   else if (classement >= 5) points = 2;
   pointsInput.value = points;
 }
+
+function openEventModal() {
+  document.getElementById("eventModal").style.display = "flex";
+}
+function closeEventModal() {
+  document.getElementById("eventModal").style.display = "none";
+}
+window.openEventModal = openEventModal;
+window.closeEventModal = closeEventModal;
