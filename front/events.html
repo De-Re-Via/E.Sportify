@@ -16,13 +16,13 @@
 
   <!-- Barre de navigation -->
   <header>
-    <div class="logo">E.S</div>
-    <h1 class="site-title">Esportify</h1>
-    <nav class="main-nav" id="mainNav">
-      <!-- Navbar dynamique générée par navbar.js -->
-    </nav>
-    <div class="burger" onclick="toggleMenu()">☰</div>
-  </header>
+      <div class="logo">E.S</div>
+      <h1 class="site-title">E.SPORTIFY</h1>
+      <nav class="main-nav" id="mainNav">
+        <!-- Liens injectés dynamiquement -->
+      </nav>
+      <div class="burger" onclick="toggleMenu()">☰</div>
+    </header>
 
   <main class="container">
 
@@ -53,5 +53,49 @@
   <!-- JS -->
   <script src="assets/js/navbar.js"></script>
   <script src="assets/js/event-repo.js"></script>
+  <script src="assets/js/login.js"></script>
+  <script src="assets/js/main.js"></script>
+ 
+
+  <!-- MODAL UNIQUE CONNEXION/INSCRIPTION -->
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+
+      <!-- Onglets -->
+      <div class="tabs">
+        <button onclick="showTab('login')" id="loginTab" class="active">Connexion</button>
+        <button onclick="showTab('register')" id="registerTab">Inscription</button>
+      </div>
+
+      <!-- Formulaire de connexion -->
+      <form id="loginForm" class="auth-form">
+        <h2>Connexion</h2>
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Mot de passe" required />
+        <button type="submit">Se connecter</button>
+      </form>
+
+      <!-- Formulaire d'inscription -->
+      <form id="registerForm" class="auth-form hidden">
+        <h2>Inscription</h2>
+        <input type="text" name="username" placeholder="Pseudo" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" id="password" name="password" placeholder="Mot de passe" required />
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmer le mot de passe" required />
+        <p id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</p>
+        <button type="submit">S’inscrire</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL : Top 10 joueurs -->
+  <div id="top10Modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeTop10Modal()">&times;</span>
+      <div id="top10Content">Chargement du classement...</div>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -1,42 +1,71 @@
 <?php
-/**
- * create_event.php
- * Rôle : enregistre un nouvel événement avec statut "en_attente"
- */
-
 session_start();
 require_once("../config/database.php");
 
 // Vérifie que l'utilisateur est connecté
 if (!isset($_SESSION["user_id"])) {
-    echo "Erreur : non connecté.";
+    http_response_code(401);
+    echo "Non autorisé.";
     exit;
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Récupère les données
-    $titre = trim($_POST["titre"]);
-    $description = trim($_POST["description"]);
-    $date_event = $_POST["date_event"];
-    $heure_event = $_POST["heure_event"];
-    $jeu = trim($_POST["jeu"]);
-    $id_createur = $_SESSION["user_id"];
-    $statut = "en_attente";
+// Vérifie que toutes les données requises sont là
+if (
+    empty($_POST["titre"]) ||
+    empty($_POST["description"]) ||
+    empty($_POST["date_event"]) ||
+    empty($_POST["heure_event"]) ||
+    empty($_POST["jeu"]) ||
+    empty($_POST["max_players"])
+) {
+    http_response_code(400);
+    echo "Données manquantes.";
+    exit;
+}
 
-    // Vérification minimale
-    if (empty($titre) || empty($description) || empty($date_event) || empty($heure_event) || empty($jeu)) {
-        echo "Tous les champs sont requis.";
-        exit;
-    }
+// Récupération des données
+$titre = $_POST["titre"];
+$description = $_POST["description"];
+$date_event = $_POST["date_event"];
+$heure_event = $_POST["heure_event"];
+$jeu = $_POST["jeu"];
+$max_players = intval($_POST["max_players"]);
+$id_createur = $_SESSION["user_id"];
+$created_at = date("Y-m-d H:i:s");
 
-    // Insertion dans la BDD
-    try {
-        $stmt = $pdo->prepare("INSERT INTO events (titre, description, date_event, heure_event, jeu, statut, id_createur) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$titre, $description, $date_event, $heure_event, $jeu, $statut, $id_createur]);
+// Gestion de l'image uploadée
+$image_url = null;
 
-        echo "succès";
-    } catch (PDOException $e) {
-        echo "Erreur lors de l'enregistrement : " . $e->getMessage();
+if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
+    $uploadDir = "../../assets/events/";
+    $filename = uniqid() . "_" . basename($_FILES["image"]["name"]);
+    $targetFile = $uploadDir . $filename;
+
+    if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+        $image_url = $filename;
     }
 }
-?>
+
+try {
+    // Prépare la requête d'insertion avec le champ max_players
+    $stmt = $pdo->prepare("
+        INSERT INTO events (titre, description, date_event, heure_event, jeu, id_createur, created_at, image_url, max_players)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
+    $stmt->execute([
+        $titre,
+        $description,
+        $date_event,
+        $heure_event,
+        $jeu,
+        $id_createur,
+        $created_at,
+        $image_url,
+        $max_players
+    ]);
+
+    echo "Événement proposé avec succès.";
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo "Erreur SQL : " . $e->getMessage();
+}

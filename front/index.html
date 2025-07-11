@@ -14,11 +14,11 @@
   </head>
   <body>
 
-    <!-- Vidéo de fond -->
+    <!-- Vidéo de fond
     <video class="bg-video" autoplay muted loop playsinline>
-      <source src="/front/assets/videos/NeonCloud.mp4" type="video/mp4" />
+      <source src="/front/assets/videos/NeonClou.mp4" type="video/mp4" />
       Votre navigateur ne supporte pas la vidéo HTML5.
-    </video>
+    </video> -->
 
     <!-- Barre de navigation -->
     <header>
@@ -30,6 +30,7 @@
       <div class="burger" onclick="toggleMenu()">☰</div>
     </header>
 
+    
 
     <!-- Chrono -->
     <section class="chrono-banner">
@@ -38,6 +39,8 @@
 
     <!-- Contenu principal -->
     <main>
+
+      <!-- A PROPOS -->
       <aside class="left-info neon-background">
         <h2>A PROPOS...</h2>
           <div><p>
@@ -62,11 +65,21 @@
 
       </aside>
 
-      <section class="event-principal neon-border">
+      <!-- PROCHAIN EVENT -->
+      <section class="event-principal neon-border" id="mainEvent">
         <h2>PROCHAINEMENT</h2>
-        <img src="assets/events/event01.jpg" alt="Événement principal" />
+        <img id="mainEventImg" src="assets/events/default.jpg" alt="Événement principal" />
+        <div class="event-details">
+          <h3 id="mainEventTitle"></h3>
+          <p><strong>Jeu :</strong> <span id="mainEventGame"></span></p>
+          <p><strong>Date :</strong> <span id="mainEventDate"></span></p>
+          <p><strong>Description :</strong> <span id="mainEventDesc"></span></p>
+        </div>
       </section>
 
+
+
+      <!-- LES ACTUS -->
       <aside class="actualites neon-background">
         <h2>ACTU</h2>
         <div class="cards">
@@ -76,6 +89,8 @@
         </div>
       </aside>
 
+
+      <!-- GALERIE IMAGES -->
       <section class="galerie neon-border">
           <h2></h2>
           <div id="carouselExample" class="carousel slide">
@@ -104,16 +119,16 @@
           </div>
       </section>
 
-
+      <!-- LISTE DES PROCHAINS EVENTS A VENIR -->
       <section class="evenements neon-background">
         <h2>SOON...</h2>
-        <div class="cards">
-          <div class="card"><img src="assets/events/event02.jpg" alt="EventToCome" /></div>
-          <div class="card"><img src="assets/events/event03.jpg" alt="EventToCome" /></div>
-          <div class="card"><img src="assets/events/event04.jpg" alt="EventToCome" /></div>
-          <div class="card"><img src="assets/events/event04.jpg" alt="EventToCome" /></div>
+        <div id="eventsPreview" class="cards">
+          <!-- JS injectera les événements ici -->
         </div>
       </section>
+
+
+
     </main>
 
     <!-- Pied de page -->
@@ -130,6 +145,14 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/navbar.js"></script>
     <script src="assets/js/login.js"></script>
+    <script src="assets/js/home-events.js"></script>
+    <script src="assets/js/main-event.js"></script>
+    <script src="assets/js/countdown.js"></script>
+    <script src="assets/js/next-event.js"></script>
+
+
+
+
 
     <!-- BOOTSTRAP JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -162,11 +185,14 @@
           <p id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</p>
           <button type="submit">S’inscrire</button>
         </form>
+      </div>
+    </div>
 
-
-
-
-
+    <!-- MODAL : Top 10 joueurs -->
+    <div id="top10Modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" onclick="closeTop10Modal()">&times;</span>
+        <div id="top10Content">Chargement du classement...</div>
       </div>
     </div>
 

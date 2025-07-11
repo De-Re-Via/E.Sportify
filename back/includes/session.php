@@ -7,7 +7,10 @@
  * - Redirige si non connecté
  */
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 // Fonction : utilisateur connecté ?
 function isLoggedIn() {

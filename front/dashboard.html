@@ -22,55 +22,63 @@
     <div class="burger" onclick="toggleMenu()">☰</div>
   </header>
 
-
   <main>
+    
     <section id="dashboardContent">
-      <!-- Accueil texte -->
-      
+       <!--Toutes les sections sont injectées par PHP--> 
     </section>
 
     <section>
-      <!-- Bouton pour proposer un événement -->
       <button onclick="openEventModal()">Proposer un événement</button>
     </section>
 
-    <section id="myEvents">
-      <h2>Mes événements proposés</h2>
-      <div id="eventsList"></div>
-    </section>
+    <!-- Modale création événement -->
+    <div id="eventModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeEventModal()">&times;</span>
+        <h2>Proposer un événement</h2>
+        <form id="eventForm" class="auth-form" enctype="multipart/form-data"> 
+          <input type="text" name="titre" placeholder="Nom de l’événement" required />
+          <textarea name="description" placeholder="Description de l’événement" required></textarea>
+          <input type="date" name="date_event" required />
+          <input type="time" name="heure_event" required />
+          <input type="text" name="jeu" placeholder="Nom du jeu" required />
+          <label for="image">Image de couverture :</label>
+          <input type="file" name="image" accept="image/*" />
+          <label for="max_players">Nombre max de joueurs :</label>
+          <input type="number" name="max_players" min="2" max="32" value="8" required />
+          <button type="submit">Envoyer la demande</button>
+        </form>
+      </div>
+    </div>
 
-    <section id="moderationZone">
-      <h2>Modération des événements en attente</h2>
-      <!-- Les événements à modérer s’affichent ici -->
-    </section>
-
-
-
+    <!-- Modale attribution des points -->
+    <div id="pointsModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" onclick="closePointsModal()">&times;</span>
+        <h2>Attribuer les points</h2>
+        <form id="assignPointsForm">
+          <input type="hidden" name="id_event" id="pointsEventId" />
+          <div id="playersList"></div>
+          <button type="submit">Valider les scores</button>
+        </form>
+      </div>
+    </div>
     
+    <!-- MODAL : Top 10 joueurs -->
+    <div id="top10Modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" onclick="closeTop10Modal()">&times;</span>
+        <div id="top10Content">Chargement du classement...</div>
+      </div>
+    </div>
+
   </main>
 
-  <script src="assets/js/dashboard.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/navbar.js"></script>
   <script src="assets/js/login.js"></script>
-  <script src="assets/js/event.js"></script>
-
-  <!-- MODAL : Formulaire de création d'événement -->
-  <div id="eventModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeEventModal()">&times;</span>
-      <h2>Proposer un événement</h2>
-
-      <form id="eventForm" class="auth-form">
-        <input type="text" name="titre" placeholder="Nom de l’événement" required />
-        <textarea name="description" placeholder="Description de l’événement" required></textarea>
-        <input type="date" name="date_event" required />
-        <input type="time" name="heure_event" required />
-        <input type="text" name="jeu" placeholder="Nom du jeu" required />
-        <button type="submit">Envoyer la demande</button>
-      </form>
-    </div>
-  </div>
-
+  <script src="assets/js/event.js"></script>  
+  <script src="assets/js/dashboard.js"></script>
 </body>
 </html>

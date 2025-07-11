@@ -1,5 +1,5 @@
 // events.js – utilisé dans dashboard.html
-// Gère : création, affichage perso, modération admin/orga
+// Gère : création, affichage perso, modération admin/orga ET TRAVAIL AVEC LE DASHBOARD
 
 // Ouvre/ferme le modal
 function openEventModal() {

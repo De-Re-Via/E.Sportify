@@ -1,27 +1,27 @@
 // main.js
-// Rôle : gérer les interactions UI générales (menu burger, modale, tabs, vérification inscription)
+// ➤ Rôle : interactions globales (menu, modale connexion, vérification inscription, top10 modal)
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("E.SPORTIFY chargé !");
 });
 
-// MENU BURGER : affiche/masque le menu principal
+// ➤ MENU BURGER : toggle sur clic
 function toggleMenu() {
   const nav = document.querySelector('.main-nav');
   nav.classList.toggle('show');
 }
 
-// Affiche la modale de connexion/inscription
+// ➤ Ouvre la modale de connexion
 function openModal() {
   document.getElementById("authModal").style.display = "block";
 }
 
-// Ferme la modale
+// ➤ Ferme la modale de connexion
 function closeModal() {
   document.getElementById("authModal").style.display = "none";
 }
 
-// Bascule entre les onglets "Connexion" et "Inscription"
+// ➤ Gestion des onglets Connexion/Inscription
 function showTab(tab) {
   const loginForm = document.getElementById("loginForm");
   const registerForm = document.getElementById("registerForm");
@@ -41,7 +41,7 @@ function showTab(tab) {
   }
 }
 
-// Vérifie si les deux mots de passe correspondent à l'inscription
+// ➤ Vérifie les mots de passe à l'inscription
 function checkPasswordsMatch() {
   const password = document.getElementById("password").value;
   const confirm = document.getElementById("confirm_password").value;
@@ -56,14 +56,13 @@ function checkPasswordsMatch() {
   return true;
 }
 
-// Gère le formulaire d'inscription
+// ➤ Gère l’envoi du formulaire d’inscription
 document.addEventListener("DOMContentLoaded", () => {
   const registerForm = document.getElementById("registerForm");
 
   if (registerForm) {
     registerForm.addEventListener("submit", async function (e) {
       e.preventDefault();
-
       if (!checkPasswordsMatch()) return;
 
       const formData = new FormData(registerForm);
@@ -89,3 +88,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// ➤ Ouvre le modal Top 10 (♛)
+function openTop10Modal() {
+  const modal = document.getElementById("top10Modal");
+  const content = document.getElementById("top10Content");
+
+  if (!modal || !content) return;
+
+  modal.style.display = "flex";
+  content.innerHTML = "Chargement...";
+
+  fetch("/esportify/back/pages/top10.php")
+    .then(res => res.text())
+    .then(html => {
+      content.innerHTML = html;
+    })
+    .catch(err => {
+      content.innerHTML = "<p>Erreur de chargement du classement.</p>";
+      console.error("Erreur top10 :", err);
+    });
+}
+
+// ➤ Ferme le modal Top 10
+function closeTop10Modal() {
+  const modal = document.getElementById("top10Modal");
+  if (modal) modal.style.display = "none";
+}

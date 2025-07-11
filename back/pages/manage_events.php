@@ -7,6 +7,14 @@
 session_start();
 require_once("../config/database.php");
 
+// Protection : accès réservé à l'admin uniquement
+if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['admin', 'organisateur'])) {
+    http_response_code(403);
+    echo "Accès refusé : réservé à l'administrateur.";
+    exit;
+}
+
+
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION["user_id"]) || !isset($_SESSION["role"])) {
     echo "Accès refusé.";
@@ -99,4 +107,47 @@ foreach ($events as $event) {
     echo "<button onclick=\"refuserEvent($id)\">Refuser</button>";
     echo "</div>";
 }
+
+// Affiche un bouton d’attribution des points pour les événements validés
+$stmt_valide = $pdo->query("SELECT e.*, u.username FROM events e 
+                     JOIN users u ON e.id_createur = u.id 
+                     WHERE statut = 'valide'
+                     ORDER BY e.date_event DESC");
+
+$events_valide = $stmt_valide->fetchAll(PDO::FETCH_ASSOC);
+
+if ($events_valide) {
+    echo "<hr><h2>Événements validés à gérer :</h2>";
+
+    foreach ($events_valide as $event) {
+        $titre = htmlspecialchars($event["titre"]);
+        $jeu = htmlspecialchars($event["jeu"]);
+        $date = $event["date_event"];
+        $heure = $event["heure_event"];
+        $id = $event["id"];
+
+        echo "<div class='event-card'>";
+        echo "<h3>$titre</h3>";
+        echo "<p><strong>Jeu :</strong> $jeu</p>";
+        echo "<p><strong>Date :</strong> $date à $heure</p>";
+        echo "<button onclick=\"openPointsModal($id)\">Attribuer les points</button>";
+        echo "</div>";
+    }
+}
+
 ?>
+
+<!-- MODAL : Attribution de points -->
+<div id="pointsModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closePointsModal()">&times;</span>
+    <h2>Attribuer les points</h2>
+    <form id="assignPointsForm">
+      <input type="hidden" name="id_event" id="pointsEventId" />
+      <div id="playersList">
+        <!-- Les joueurs seront injectés ici via JS -->
+      </div>
+      <button type="submit">Valider les scores</button>
+    </form>
+  </div>
+</div>
