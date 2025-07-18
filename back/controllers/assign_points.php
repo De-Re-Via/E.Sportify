@@ -2,43 +2,43 @@
 session_start();
 require_once("../config/database.php");
 
-// Vérifie que l'utilisateur est connecté
 if (!isset($_SESSION["user_id"])) {
     http_response_code(401);
     echo "Non autorisé.";
     exit;
 }
 
-// Récupère les données envoyées en JSON
-$data = json_decode(file_get_contents("php://input"), true);
-
-// Vérifie que les données attendues sont bien présentes
-if (
-    !isset($data["id_event"]) ||
-    !isset($data["players"]) ||
-    !is_array($data["players"])
-) {
-    http_response_code(400);
-    echo "Données incomplètes.";
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    http_response_code(405);
+    echo "Méthode non autorisée.";
     exit;
 }
 
-$id_event = intval($data["id_event"]);
-$joueurs = $data["players"];
+$id_event = $_POST["id_event"] ?? null;
+if (!$id_event || !isset($_POST["id"])) {
+    http_response_code(400);
+    echo "Paramètres manquants.";
+    exit;
+}
+
+// Pour debug : enregistrer les données reçues
+file_put_contents(__DIR__ . "/debug_points.log", print_r($_POST, true));
 
 try {
-    // Prépare la requête pour mettre à jour les points et le classement
-    $stmt = $pdo->prepare("UPDATE participants SET points = ?, classement = ? WHERE id_user = ? AND id_event = ?");
+    $update = $pdo->prepare("UPDATE participants SET points = ?, classement = ? WHERE id_user = ? AND id_event = ?");
+    $check = $pdo->prepare("SELECT COUNT(*) FROM participants WHERE id_user = ? AND id_event = ?");
 
-    foreach ($joueurs as $joueur) {
-        $id_user = intval($joueur["id"]);
-        $points = intval($joueur["points"]);
-        $classement = intval($joueur["classement"]);
+    foreach ($_POST["id"] as $id_user) {
+        $classement = $_POST["classement_$id_user"] ?? 0;
+        $points = $_POST["points_$id_user"] ?? 0;
 
-        $stmt->execute([$points, $classement, $id_user, $id_event]);
+        $check->execute([$id_user, $id_event]);
+        if ($check->fetchColumn() > 0) {
+            $update->execute([$points, $classement, $id_user, $id_event]);
+        }
     }
 
-    echo "Attribution des points réussie.";
+    echo "Points attribués avec succès.";
 } catch (PDOException $e) {
     http_response_code(500);
     echo "Erreur SQL : " . $e->getMessage();

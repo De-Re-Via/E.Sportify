@@ -1,40 +1,41 @@
-// main-events.js
-// ➤ Rôle : charge dynamiquement les événements à venir (statut = "valide") pour les injecter dans la section SOON...
+// main-event.js
+// Affiche l’événement le plus proche dans la section "PROCHAINEMENT"
 
-// Fonction principale
-async function chargerEvenements() {
+async function chargerMainEvent() {
   try {
-    // 🔁 Appel AJAX vers le backend PHP qui renvoie les événements à venir
-    const reponse = await fetch("../back/pages/soon_events.php");
+    const res = await fetch("/esportify/back/pages/next_event.php");
+    const event = await res.json();
 
-    // 🔄 Convertit la réponse en JSON (tableau d'événements)
-    const events = await reponse.json();
+    // Si aucun événement valide
+    if (!event || !event.titre) {
+      document.getElementById("mainEventTitle").textContent = "Aucun événement à venir";
+      return;
+    }
 
-    // 🧱 Cible la section HTML prévue pour recevoir les cartes
-    const conteneur = document.getElementById("eventsPreview");
+    // Récupération des éléments HTML
+    const imgEl = document.getElementById("mainEventImg");
+    const titleEl = document.getElementById("mainEventTitle");
+    const gameEl = document.getElementById("mainEventGame");
+    const dateEl = document.getElementById("mainEventDate");
+    const descEl = document.getElementById("mainEventDesc");
 
-    // 🧹 Vide l'existant (au cas où)
-    conteneur.innerHTML = "";
+    // Injection des données
+    if (imgEl) imgEl.src = `assets/events/${event.image_url || "default.jpg"}`;
+    if (titleEl) titleEl.textContent = event.titre;
+    if (gameEl) gameEl.textContent = event.jeu;
+    if (dateEl) dateEl.textContent = `${event.date_event} à ${event.heure_event}`;
 
-    // 🔁 Pour chaque événement, on génère une carte visuelle
-    events.forEach(event => {
-      const div = document.createElement("div");
-      div.className = "card";
+    const inscrits = event.inscrits ?? "0";
+    const max = event.max_players ?? "N/C";
 
-      div.innerHTML = `
-        <img src="assets/events/${event.image_url}" alt="${event.titre}" class="event-cover" />
-        <h3>${event.titre}</h3>
-        <p><strong>Jeu :</strong> ${event.jeu}</p>
-        <p><strong>Date :</strong> ${event.date_event} à ${event.heure_event}</p>
-      `;
+    if (descEl) {
+      descEl.innerHTML = `<strong>Description :</strong> ${event.description}<br>
+      <strong>Joueurs :</strong> ${inscrits} / ${max}`;
+    }
 
-      conteneur.appendChild(div);
-    });
-
-  } catch (erreur) {
-    console.error("Erreur chargement events :", erreur);
+  } catch (err) {
+    console.error("Erreur chargement PROCHAINEMENT :", err);
   }
 }
 
-// 🚀 Déclenche l'exécution une fois le DOM chargé
-document.addEventListener("DOMContentLoaded", chargerEvenements);
+document.addEventListener("DOMContentLoaded", chargerMainEvent);

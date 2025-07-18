@@ -1,4 +1,5 @@
-// dashboard.js - version stable validée
+
+// dashboard.js - version stable corrigée
 // Gère la création d'événement, le dashboard dynamique et la modale points
 
 let soumissionEnCours = false;
@@ -10,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const html = await response.text();
     content.innerHTML = html;
     activerAttributionPoints();
+    activerActionsCartes();
   } catch (err) {
     content.innerHTML = "<p>Erreur chargement dashboard.</p>";
     console.error("Erreur JS :", err);
@@ -54,18 +56,84 @@ async function actualiserDashboard() {
     const container = document.getElementById("dashboardContent");
     container.innerHTML = html;
     activerAttributionPoints();
+    activerActionsCartes();
   } catch (err) {
     console.error("Erreur rechargement dashboard :", err);
   }
 }
 
 function activerAttributionPoints() {
-  const buttons = document.querySelectorAll("button[onclick^='openPointsModal']");
-  buttons.forEach(button => {
-    const id_event = button.getAttribute("onclick").match(/\d+/)[0];
-    button.addEventListener("click", () => openPointsModal(id_event));
+  document.querySelectorAll("button[onclick^='openPointsModal']").forEach(btn => {
+    const eventId = btn.getAttribute("onclick").match(/\d+/)[0];
+    btn.onclick = () => openPointsModal(eventId);
   });
 }
+
+function activerActionsCartes() {
+  document.querySelectorAll("button[onclick^='startEvent']").forEach(btn => {
+    const id = btn.getAttribute("onclick").match(/\d+/)[0];
+    btn.onclick = () => startEvent(id);
+  });
+  document.querySelectorAll("button[onclick^='endEvent']").forEach(btn => {
+    const id = btn.getAttribute("onclick").match(/\d+/)[0];
+    btn.onclick = () => endEvent(id);
+  });
+  document.querySelectorAll("button[onclick^='deleteEvent']").forEach(btn => {
+    const id = btn.getAttribute("onclick").match(/\d+/)[0];
+    btn.onclick = () => deleteEvent(id);
+  });
+}
+
+function deleteEvent(eventId) {
+  if (!confirm("Supprimer cet événement ?")) return;
+
+  const formData = new FormData();
+  formData.append("id_event", eventId);
+
+  fetch("/esportify/back/controllers/delete_event.php", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.text())
+  .then(txt => {
+    console.log("Réponse suppression :", txt);
+    alert("Événement supprimé.");
+    location.reload();
+  })
+  .catch(err => {
+    console.error("Erreur suppression :", err);
+    alert("Erreur lors de la suppression.");
+  });
+}
+
+
+
+function startEvent(eventId) {
+  fetch('/esportify/back/controllers/update_event_status.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `event_id=${eventId}&new_state=en_cours`
+  })
+  .then(response => response.text())
+  .then(result => {
+    console.log("Événement démarré :", result);
+    location.reload();
+  });
+}
+
+function endEvent(eventId) {
+  fetch('/esportify/back/controllers/update_event_status.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `event_id=${eventId}&new_state=termine`
+  })
+  .then(response => response.text())
+  .then(result => {
+    console.log("Événement terminé :", result);
+    location.reload();
+  });
+}
+
 
 function openPointsModal(id_event) {
   document.getElementById("pointsEventId").value = id_event;
@@ -120,3 +188,29 @@ function closeEventModal() {
 }
 window.openEventModal = openEventModal;
 window.closeEventModal = closeEventModal;
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("assignPointsForm");
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch("/esportify/back/controllers/assign_points.php", {
+          method: "POST",
+          body: formData
+        });
+
+        const text = await res.text();
+        alert(text);
+        closePointsModal();
+      } catch (err) {
+        alert("Erreur lors de l'envoi des scores.");
+        console.error(err);
+      }
+    });
+  }
+});

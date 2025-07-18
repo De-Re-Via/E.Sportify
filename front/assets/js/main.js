@@ -3,6 +3,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("E.SPORTIFY chargé !");
+  initChatSystem(); // Initialise la discussion à chargement
 });
 
 // ➤ MENU BURGER : toggle sur clic
@@ -115,3 +116,99 @@ function closeTop10Modal() {
   const modal = document.getElementById("top10Modal");
   if (modal) modal.style.display = "none";
 }
+
+// ➤ DISCUSSION / CHAT GLOBAL (sans champ pseudo)
+let chatInterval = null; // pour éviter les doublons d'intervalle
+let lastMessageId = null;
+
+function initChatSystem() {
+  const form = document.getElementById("chat-form");
+  const box = document.getElementById("chat-box");
+  const audio = document.getElementById("notifSound");
+  const icon = document.querySelector(".icon-discussion");
+
+  if (!form || !box) return;
+
+  let isAdmin = false;
+
+  function loadMessages() {
+    fetch("/esportify/back/controllers/chat.php")
+      .then(res => res.json())
+      .then(data => {
+        isAdmin = data.isAdmin === true;
+        const messages = data.messages;
+
+        // Vérifie si un nouveau message est arrivé
+        if (messages.length > 0 && messages[0].id !== lastMessageId) {
+          if (lastMessageId !== null) {
+            // Ne joue le son et la vibration que si ce n'est pas le 1er chargement
+            if (audio) audio.play();
+            if (icon) {
+              icon.classList.add("vibrate");
+              setTimeout(() => icon.classList.remove("vibrate"), 300);
+            }
+          }
+          lastMessageId = messages[0].id;
+        }
+
+        box.innerHTML = messages.map(msg => `
+          <div class="chat-message">
+            <strong>${msg.auteur}</strong> : ${msg.contenu}<br>
+            <small>${msg.date_envoi}</small>
+            ${isAdmin ? `<button onclick="deleteMessage(${msg.id})" style="float:right;">🗑️</button>` : ""}
+          </div>
+        `).join('');
+      });
+  }
+
+  function deleteMessage(id) {
+    if (!isAdmin) return;
+    if (!confirm("Supprimer ce message ?")) return;
+
+    fetch("/esportify/back/controllers/chat.php", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id })
+    })
+      .then(res => res.text())
+      .then(msg => {
+        alert(msg);
+        loadMessages();
+      });
+  }
+
+  if (!form.dataset.listenerAttached) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const contenu = document.getElementById("contenu").value.trim().slice(0, 100);
+      if (!contenu) return alert("Message vide !");
+
+      fetch("/esportify/back/controllers/chat.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contenu })
+      })
+        .then(res => res.text())
+        .then(msg => {
+          alert(msg);
+          document.getElementById("contenu").value = "";
+          loadMessages();
+        });
+    });
+
+    form.dataset.listenerAttached = true;
+  }
+
+  // Lancer le chargement initial + protection double appel
+  loadMessages();
+  if (!chatInterval) {
+    chatInterval = setInterval(loadMessages, 10000);
+  }
+
+  window.deleteMessage = deleteMessage;
+}
+
+// Lancer à chargement DOM
+document.addEventListener("DOMContentLoaded", () => {
+  initChatSystem();
+});

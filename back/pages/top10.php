@@ -1,25 +1,32 @@
 <?php
-require_once("../config/database.php");
+// Connexion à la base de données
+require_once(__DIR__ . '/../config/database.php');
+session_start();
 
-// Requête : top 10 des joueurs avec points
-$stmt = $pdo->prepare("
-    SELECT u.username, SUM(p.points) AS total_points
+/*
+   Objectif :
+   - Prendre en compte tous les participants qui ont au moins une participation
+   - Ajouter tous les points (même 0), sauf si la valeur est NULL
+   - Classer les utilisateurs par total décroissant
+*/
+
+$sql = "
+    SELECT u.username, SUM(CASE WHEN p.points IS NOT NULL THEN p.points ELSE 0 END) AS total_points
     FROM participants p
     JOIN users u ON p.id_user = u.id
     GROUP BY p.id_user
-    HAVING total_points > 0
     ORDER BY total_points DESC
     LIMIT 10
-");
-$stmt->execute();
-$top = $stmt->fetchAll(PDO::FETCH_ASSOC);
+";
 
-// Génère la liste
-echo "<h3>Top 10 Joueurs</h3>";
-echo "<ol class='top10-list'>";
-foreach ($top as $joueur) {
-    $pseudo = htmlspecialchars($joueur["username"]);
-    $points = $joueur["total_points"];
-    echo "<li>$pseudo - $points pts</li>";
+$stmt = $pdo->query($sql);
+$players = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Affichage
+echo "<h2>Top 10 Joueurs</h2>";
+echo "<ol>";
+foreach ($players as $player) {
+    $pts = (int) $player['total_points'];
+    echo "<li>{$player['username']} – {$pts} pts</li>";
 }
 echo "</ol>";

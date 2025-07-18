@@ -1,42 +1,63 @@
 // home-events.js
-// ➤ Injecte dans la section SOON les prochains events a venir, en lien direct avec soon_events.php
-// Lorsque le document est chargé, exécute le code ci-dessous
+// ➤ Affiche tous les événements à venir dans la section "SOON..."
+
 document.addEventListener("DOMContentLoaded", () => {
-
-  // Appelle le script PHP qui renvoie les événements validés (au format JSON)
-  fetch("../back/pages/soon_events.php")
-    .then((res) => res.json()) // Convertit la réponse en objet JavaScript
-    .then((events) => {
-      // Sélectionne la div où les cartes d'événements seront injectées
+  fetch("/esportify/back/pages/all_events.php?mode=soon")
+    .then(res => res.json())
+    .then(events => {
       const container = document.getElementById("eventsPreview");
-      if (!container) return; // Si la div n'existe pas, on sort
-
-      // Vide le contenu au cas où
+      if (!container) return;
       container.innerHTML = "";
 
-      // Parcourt chaque événement reçu depuis la base
       events.forEach(event => {
-        // Crée un élément <div> avec la classe .card
         const card = document.createElement("div");
-        card.classList.add("card");
+        card.className = "card";
 
-        // Injecte le contenu HTML de la carte dans le div
+        const bouton = event.estInscrit
+          ? `<button class="unregister-btn" data-event-id="${event.id}">Se désinscrire</button>`
+          : `<button class="register-btn" data-event-id="${event.id}">S’inscrire</button>`;
+
         card.innerHTML = `
-          <img src="assets/events/${event.image_url}" alt="${event.titre}" class="event-cover" />
+          <img src="assets/events/${event.image_url}" alt="${event.titre}" />
           <div class="event-info">
             <h3>${event.titre}</h3>
             <p><strong>Jeu :</strong> ${event.jeu}</p>
-            <p><strong>Date :</strong> ${event.date_event}</p>
+            <p><strong>Date :</strong> ${event.date_event} à ${event.heure_event}</p>
+            <p><strong>Description :</strong> ${event.description}</p>
+            <p><strong>Joueurs :</strong> ${event.inscrits} / ${event.max_players}</p>
+            ${bouton}
           </div>
         `;
 
-        // Ajoute cette carte dans le conteneur global
         container.appendChild(card);
       });
+
+      // Bouton S’inscrire
+      document.querySelectorAll(".register-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.eventId;
+          fetch("/esportify/back/controllers/register_event.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_event: id })
+          }).then(res => res.text()).then(alert).then(() => location.reload());
+        });
+      });
+
+      // Bouton Se désinscrire
+      document.querySelectorAll(".unregister-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.eventId;
+          if (!confirm("Se désinscrire ?")) return;
+          fetch("/esportify/back/controllers/unregister_event.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_event: id })
+          }).then(res => res.text()).then(alert).then(() => location.reload());
+        });
+      });
     })
-    .catch((err) => {
-      // En cas d'erreur (ex : problème réseau ou serveur), on logue l’erreur dans la console
+    .catch(err => {
       console.error("Erreur chargement events:", err);
     });
-
 });
