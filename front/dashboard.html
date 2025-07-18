@@ -1,28 +1,73 @@
+<!--
+====================================================================================
+    Fichier : dashboard.html
+
+    Rôle :
+    Cette page constitue le tableau de bord principal des utilisateurs d’E.Sportify. Elle permet l’accès à toutes les fonctionnalités
+    du back-office selon le rôle (joueur, organisateur, admin), notamment :
+      - Visualisation des participations, événements créés, scores, classements.
+      - Création de nouveaux événements via une modale.
+      - Attribution des points aux participants après un événement (modale dédiée).
+      - Accès rapide au Top 10 joueurs via une modale.
+      - Gestion responsive et navigation cohérente sur tous supports.
+
+    Fonctionnement :
+    - L’entête contient le logo, le titre du site et la barre de navigation dynamique (injectée par navbar.js selon la session).
+    - Le bouton "Proposer un événement" ouvre une modale de création d’événement (formulaire complet avec upload d’image).
+    - Le contenu principal du dashboard (#dashboardContent) et la section performances (#mesPerformancesContent) sont injectés dynamiquement via JavaScript/PHP selon le rôle utilisateur.
+    - La modale d’attribution de points est affichée pour les organisateurs/admins à la fin d’un événement, permettant de saisir classement et points par joueur.
+    - La modale "Top 10" permet de visualiser à tout moment le classement général.
+    - Un footer reprend les liens fictifs vers les réseaux sociaux et le branding du site.
+
+    Interactions avec le reste du projet :
+    - Le contenu dynamique (#dashboardContent, #mesPerformancesContent) est alimenté par dashboard.php et d’autres scripts PHP via AJAX (voir dashboard.js).
+    - Les actions de création, suppression, modification d’événement, attribution de points font appel aux contrôleurs PHP correspondants.
+    - Le CSS global et responsive assure la cohérence graphique.
+    - Le menu burger et la barre de navigation sont gérés par navbar.js et main.js.
+    - Les modales sont contrôlées par dashboard.js et main.js.
+    - Les boutons de participation, de scores, etc. nécessitent une authentification préalable.
+
+====================================================================================
+-->
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <!-- SEO / réseaux sociaux -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Projet étudiant - Formation Développeur Web" />
+  <meta property="og:title" content="E.Sportify - Plateforme e-sport fictive" />
+  <meta property="og:description" content="Bienvenue sur E.Sportify, site fictif d'exercice de formation web. Toutes les infos, mentions légales et CGU ici." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://localhost/esportify/404.html" />
+  <meta property="og:image" content="https://localhost/esportify/assets/images/esportify-banner.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="E.Sportify - Plateforme e-sport fictive" />
+  <meta name="twitter:description" content="Bienvenue sur E.Sportify, toutes les infos sur le projet, mentions légales et CGU." />
+  <meta name="twitter:image" content="https://localhost/esportify/assets/images/esportify-banner.jpg" />
   <title>Dashboard | E.Sportify</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
-    <link rel="stylesheet" href="assets/css/responsive.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
-    <!-- BOOTSTRAP CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      .dashboard-column {
-        background: #1a1a1a;
-        color: white;
-        padding: 1rem;
-        border-radius: 10px;
-        width: 25%;
-        min-width: 250px;
-        margin-left: 2rem;
-      }
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Styles propres à la page -->
+  <style>
+    .dashboard-column {
+      background: #1a1a1a;
+      color: white;
+      padding: 1rem;
+      border-radius: 10px;
+      width: 25%;
+      min-width: 250px;
+      margin-left: 2rem;
+    }
 
-    </style>
+  </style>
 </head>
+
 <body>
 
   <header>
@@ -93,15 +138,16 @@
   </main>
 
   <!-- Pied de page -->
-    <footer>
-      <div class="socials">
-        <a href="#"><img src="assets/images/twitter.png" alt="Twitter" /></a>
-        <a href="#"><img src="assets/images/intagram.png" alt="Instagram" /></a>
-        <a href="#"><img src="assets/images/facebook.png" alt="Facebook" /></a>
-        <a href="#"><img src="assets/images/messenger.png" alt="Messenger" /></a>
-      </div>
-      <br><p>E.SPORTIFY</p>
-    </footer>
+  <footer>
+    <div class="socials">
+      <a href="404.html"><img src="assets/images/twitter.png" alt="Twitter" /></a>
+      <a href="404.html"><img src="assets/images/intagram.png" alt="Instagram" /></a>
+      <a href="404.html"><img src="assets/images/facebook.png" alt="Facebook" /></a>
+      <a href="404.html"><img src="assets/images/messenger.png" alt="Messenger" /></a>
+    </div>
+    <br>
+    <p><a href="404.html" style="color:inherit;text-decoration:none;cursor:pointer;"><b>E.SPORTIFY</b></a></p>
+  </footer>
 
   <script src="assets/js/dashboard.js"></script>
   <script src="assets/js/main.js"></script>

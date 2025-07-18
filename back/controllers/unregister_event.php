@@ -1,4 +1,28 @@
 <?php
+
+/*
+====================================================================================
+    Fichier : unregister_event.php
+
+    Rôle :
+    Ce fichier gère la désinscription d'un utilisateur connecté d'un événement auquel il était inscrit.
+    Il vérifie que l'utilisateur est bien authentifié, puis supprime l'inscription dans la base de données.
+
+    Fonctionnement :
+    - Reçoit l'identifiant de l'événement via POST.
+    - Vérifie la connexion de l'utilisateur via la session PHP.
+    - Vérifie que l'utilisateur est bien inscrit à l'événement.
+    - Supprime l'entrée correspondante dans la table des inscriptions.
+    - Retourne une réponse JSON de succès ou d'échec.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Appelé généralement via AJAX ou soumission de formulaire lors du clic sur "Se désinscrire".
+    - Permet de gérer le nombre d'inscrits et d'afficher le statut de l'utilisateur sur la fiche événement, dashboard, etc.
+
+====================================================================================
+*/
+
 session_start();
 require_once("../config/database.php");
 

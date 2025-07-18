@@ -1,10 +1,24 @@
 <?php
-/**
- * Fichier : logout.php
- * Rôle : Déconnecte l'utilisateur
- * - Détruit la session
- * - Redirige vers la page d’accueil (index.html)
- */
+/*
+====================================================================================
+    Fichier : logout.php
+
+    Rôle :
+    Ce fichier gère la déconnexion des utilisateurs. Il détruit la session PHP active,
+    supprimant ainsi toutes les informations de connexion, puis retourne un message de confirmation.
+
+    Fonctionnement :
+    - Démarre la session PHP pour accéder aux variables de session.
+    - Vide toutes les variables de session.
+    - Détruit la session côté serveur.
+    - Retourne une réponse JSON confirmant la déconnexion.
+
+    Interactions avec le reste du projet :
+    - Appelé lors du clic sur "Déconnexion" dans l'interface utilisateur.
+    - Permet de garantir que toutes les pages restreintes deviennent inaccessibles après la déconnexion.
+
+====================================================================================
+*/
 
 // Démarre la session si elle existe
 session_start();

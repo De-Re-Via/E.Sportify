@@ -1,10 +1,28 @@
 <?php
-/**
- * Fichier : register.php
- * Rôle : Gère l’inscription d’un nouvel utilisateur.
- * Sécurise les données, vérifie les doublons, compare les mots de passe,
- * hash le mot de passe et insère le nouvel utilisateur dans la base.
- */
+/*
+====================================================================================
+    Fichier : register.php
+
+    Rôle :
+    Ce fichier gère l'inscription de nouveaux utilisateurs. Il traite les données
+    du formulaire d'inscription, vérifie leur validité et unicité, crée le compte,
+    puis retourne une réponse JSON indiquant le succès ou l'échec.
+
+    Fonctionnement :
+    - Reçoit via POST les informations d'inscription (pseudo, email, mot de passe).
+    - Vérifie la présence et la validité des données.
+    - Vérifie l'unicité du pseudo et de l'email dans la base de données.
+    - Hache le mot de passe avant stockage.
+    - Insère le nouvel utilisateur dans la table users, rôle "joueur" par défaut.
+    - Retourne une réponse JSON de succès ou d'erreur.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Appelé depuis le formulaire d'inscription, généralement en AJAX.
+    - La création de compte permet l'accès à toutes les fonctionnalités réservées aux membres.
+
+====================================================================================
+*/
 
 // On démarre la session PHP
 session_start();

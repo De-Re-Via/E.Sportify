@@ -1,105 +1,150 @@
+<!--
+====================================================================================
+    Fichier : events.html
+
+    Rôle :
+    Cette page constitue le répertoire principal des événements d’E.Sportify.  
+    Elle permet à tout utilisateur (visiteur ou membre connecté) de :
+      - Visualiser la liste de tous les événements du site (à venir, passés, tous statuts confondus).
+      - Filtrer dynamiquement les événements selon plusieurs critères (titre, jeu, statut, date).
+      - S’inscrire ou se désinscrire à un événement via les boutons dédiés (si connecté).
+      - Accéder à la modale de connexion/inscription ou au Top 10 à tout moment.
+
+    Fonctionnement :
+    - L’entête contient le logo, le titre du site, et la barre de navigation dynamique (injectée par navbar.js).
+    - Le formulaire de filtre en haut de page permet de rechercher des événements selon plusieurs critères.
+    - La section #eventsContainer est remplie dynamiquement en AJAX via event-repo.js en fonction des filtres appliqués.
+    - L’état de connexion de l’utilisateur est transmis côté JS via l’attribut data-role du body.
+    - Les boutons d’inscription/désinscription sont affichés selon le statut de connexion et la participation.
+    - Les modales d’authentification (connexion/inscription) et du Top 10 sont accessibles depuis la page.
+    - Le footer reprend le branding et les liens fictifs vers les réseaux sociaux.
+
+    Interactions avec le reste du projet :
+    - Utilise event-repo.js pour charger dynamiquement la liste et gérer les actions (inscription/désinscription).
+    - Utilise login.js, main.js, navbar.js pour l’authentification, la gestion de la navigation, et l’expérience utilisateur.
+    - Le backend all_events.php sert de source de données pour tous les événements affichés.
+    - Les modales partagent le même comportement que sur le reste du site pour une expérience utilisateur cohérente.
+
+====================================================================================
+-->
+
 <!DOCTYPE html>
+
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Répertoire des événements | Esportify</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/responsive.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+  <head>
+    <title>Répertoire des événements | Esportify</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- SEO / réseaux sociaux -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="author" content="Projet étudiant - Formation Développeur Web" />
+    <meta property="og:title" content="E.Sportify - Plateforme e-sport fictive" />
+    <meta property="og:description" content="Bienvenue sur E.Sportify, site fictif d'exercice de formation web. Toutes les infos, mentions légales et CGU ici." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://localhost/esportify/404.html" />
+    <meta property="og:image" content="https://localhost/esportify/assets/images/esportify-banner.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="E.Sportify - Plateforme e-sport fictive" />
+    <meta name="twitter:description" content="Bienvenue sur E.Sportify, toutes les infos sur le projet, mentions légales et CGU." />
+    <meta name="twitter:image" content="https://localhost/esportify/assets/images/esportify-banner.jpg" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/responsive.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  </head>
 
-<!-- Injecte le rôle (visiteur/admin) côté JS pour gérer affichage des boutons -->
-<body data-role="<?= $_SESSION['role'] ?? 'visiteur' ?>">
+  <!-- Injecte le rôle (visiteur/admin) côté JS pour gérer affichage des boutons -->
+  <body data-role="<?= $_SESSION['role'] ?? 'visiteur' ?>">
 
-  <header>
-    <div class="logo">E.S</div>
-    <h1 class="site-title">E.SPORTIFY</h1>
-    <nav class="main-nav" id="mainNav"></nav>
-    <div class="burger" onclick="toggleMenu()">☰</div>
-  </header>
+    <header>
+      <div class="logo">E.S</div>
+      <h1 class="site-title">E.SPORTIFY</h1>
+      <nav class="main-nav" id="mainNav"></nav>
+      <div class="burger" onclick="toggleMenu()">☰</div>
+    </header>
 
-  <main>
+    <main>
 
-    <section id="eventFilters">
-      <h2>Filtrer les événements</h2>
-      <form id="filterForm">
-        <input type="text" name="titre" placeholder="Titre de l’événement" />
-        <input type="text" name="jeu" placeholder="Jeu" />
-        <select name="statut">
-          <option value="">Tous les statuts</option>
-          <option value="valide">Validé</option>
-          <option value="en_attente">En attente</option>
-          <option value="refuse">Refusé</option>
-        </select>
-        <input type="date" name="date_event" />
-        <button type="submit">Appliquer les filtres</button>
-      </form>
-    </section>
+      <section id="eventFilters">
+        <h2>Filtrer les événements</h2>
+        <form id="filterForm">
+          <input type="text" name="titre" placeholder="Titre de l’événement" />
+          <input type="text" name="jeu" placeholder="Jeu" />
+          <select name="statut">
+            <option value="">Tous les statuts</option>
+            <option value="valide">Validé</option>
+            <option value="en_attente">En attente</option>
+            <option value="refuse">Refusé</option>
+          </select>
+          <input type="date" name="date_event" />
+          <button type="submit">Appliquer les filtres</button>
+        </form>
+      </section>
 
-    <section id="eventsContainer">
-      <!-- Les événements sont injectés ici dynamiquement par JS -->
-    </section>
+      <section id="eventsContainer">
+        <!-- Les événements sont injectés ici dynamiquement par JS -->
+      </section>
 
-  </main>
+    </main>
 
-  <footer>
-    <div class="socials">
-      <a href="#"><img src="assets/images/twitter.png" alt="Twitter" /></a>
-      <a href="#"><img src="assets/images/intagram.png" alt="Instagram" /></a>
-      <a href="#"><img src="assets/images/facebook.png" alt="Facebook" /></a>
-      <a href="#"><img src="assets/images/messenger.png" alt="Messenger" /></a>
-    </div>
-    <br><p>E.SPORTIFY</p>
-  </footer>
-
-  <!-- JS -->
-  <script src="assets/js/navbar.js"></script>
-  <script src="assets/js/event-repo.js"></script>
-  <script src="assets/js/login.js"></script>
-  <script src="assets/js/main.js"></script>
-
-
-
-  <!-- Modal Connexion / Inscription -->
-  <div id="authModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-
-      <div class="tabs">
-        <button onclick="showTab('login')" id="loginTab" class="active">Connexion</button>
-        <button onclick="showTab('register')" id="registerTab">Inscription</button>
+    <footer>
+      <div class="socials">
+        <a href="404.html"><img src="assets/images/twitter.png" alt="Twitter" /></a>
+        <a href="404.html"><img src="assets/images/intagram.png" alt="Instagram" /></a>
+        <a href="404.html"><img src="assets/images/facebook.png" alt="Facebook" /></a>
+        <a href="404.html"><img src="assets/images/messenger.png" alt="Messenger" /></a>
       </div>
+      <br>
+      <p><a href="404.html" style="color:inherit;text-decoration:none;cursor:pointer;"><b>E.SPORTIFY</b></a></p>
+    </footer>
 
-      <form id="loginForm" class="auth-form">
-        <h2>Connexion</h2>
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="password" name="password" placeholder="Mot de passe" required />
-        <button type="submit">Se connecter</button>
-      </form>
+    <!-- JS -->
+    <script src="assets/js/navbar.js"></script>
+    <script src="assets/js/event-repo.js"></script>
+    <script src="assets/js/login.js"></script>
+    <script src="assets/js/main.js"></script>
 
-      <form id="registerForm" class="auth-form hidden">
-        <h2>Inscription</h2>
-        <input type="text" name="username" placeholder="Pseudo" required />
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="password" id="password" name="password" placeholder="Mot de passe" required />
-        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmer le mot de passe" required />
-        <p id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</p>
-        <button type="submit">S’inscrire</button>
-      </form>
+
+
+    <!-- Modal Connexion / Inscription -->
+    <div id="authModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+
+        <div class="tabs">
+          <button onclick="showTab('login')" id="loginTab" class="active">Connexion</button>
+          <button onclick="showTab('register')" id="registerTab">Inscription</button>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+          <h2>Connexion</h2>
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" placeholder="Mot de passe" required />
+          <button type="submit">Se connecter</button>
+        </form>
+
+        <form id="registerForm" class="auth-form hidden">
+          <h2>Inscription</h2>
+          <input type="text" name="username" placeholder="Pseudo" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" id="password" name="password" placeholder="Mot de passe" required />
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmer le mot de passe" required />
+          <p id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</p>
+          <button type="submit">S’inscrire</button>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <!-- Modal Top 10 -->
-  <div id="top10Modal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <span class="close" onclick="closeTop10Modal()">&times;</span>
-      <div id="top10Content">Chargement du classement...</div>
+    <!-- Modal Top 10 -->
+    <div id="top10Modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" onclick="closeTop10Modal()">&times;</span>
+        <div id="top10Content">Chargement du classement...</div>
+      </div>
     </div>
-  </div>
 
-</body>
+  </body>
 </html>

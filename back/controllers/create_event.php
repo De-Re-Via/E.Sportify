@@ -1,13 +1,41 @@
 <?php
+
+/*
+====================================================================================
+    Fichier : create_event.php
+
+    Rôle :
+    Ce fichier gère la création d'un nouvel événement par un utilisateur connecté (joueur ou organisateur).
+    Il traite la réception des données du formulaire de création d'événement, effectue les contrôles de validité,
+    puis enregistre l'événement dans la base de données en attendant validation de l'administrateur.
+
+    Fonctionnement :
+    - Reçoit via POST les informations de l'événement à créer (titre, description, date, heure, jeu, nombre de joueurs max, etc.).
+    - Vérifie que l'utilisateur est bien connecté et a les droits nécessaires pour créer un événement.
+    - Effectue des contrôles sur les données (présence, format).
+    - Insère l'événement en base avec le statut "en attente" (validation par l'admin requise).
+    - Retourne une réponse JSON de succès ou d'erreur.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Est appelé en AJAX ou par soumission de formulaire depuis la page de création d'événement.
+    - Les événements créés sont ensuite visibles par l'administrateur dans le dashboard pour validation.
+
+====================================================================================
+*/
+
 session_start();
+// Inclusion de la connexion à la base de données
 require_once("../config/database.php");
 
+// Vérification que l'utilisateur est connecté
 if (!isset($_SESSION["user_id"])) {
     http_response_code(401);
     echo "Non autorisé.";
     exit;
 }
 
+// Seuls les joueurs connectés (rôle joueur, organisateur ou admin) peuvent créer un événement
 if (
     empty($_POST["titre"]) ||
     empty($_POST["description"]) ||
@@ -21,6 +49,7 @@ if (
     exit;
 }
 
+// Récupération et nettoyage des données du formulaire
 $titre = $_POST["titre"];
 $description = $_POST["description"];
 $date_event = $_POST["date_event"];

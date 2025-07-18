@@ -1,27 +1,54 @@
+/*
+====================================================================================
+    Fichier : dashboard.js
 
-// dashboard.js - version stable corrigée
-// Gère la création d'événement, le dashboard dynamique et la modale points
+    Rôle :
+    Ce fichier gère dynamiquement le dashboard utilisateur du site Esportify. Il prend en charge
+    le chargement asynchrone des contenus du dashboard, la gestion des actions sur les événements
+    (création, démarrage, arrêt, suppression), l’ouverture des modales (événements, points) et
+    l’attribution automatique des points aux participants selon leur classement.
 
+    Fonctionnement :
+    - Charge dynamiquement le HTML du dashboard depuis le serveur via AJAX et met à jour le DOM.
+    - Active les fonctionnalités de gestion d’événements (création, démarrage, arrêt, suppression).
+    - Ouvre et gère les modales d’attribution des points et de création d’événement.
+    - Prend en charge la soumission de formulaires via AJAX pour éviter le rechargement de la page.
+    - Calcule automatiquement les points attribués aux joueurs selon leur classement.
+    - Actualise dynamiquement l’affichage après chaque action importante.
+
+    Interactions avec le reste du projet :
+    - Travaille avec dashboard.php côté backend pour le contenu HTML.
+    - Utilise de nombreux contrôleurs PHP en AJAX : create_event.php, delete_event.php, update_event_status.php, assign_points.php, get_participants.php.
+    - Nécessite une structure HTML compatible avec les IDs et classes utilisés (dashboardContent, eventForm, etc.).
+    - S’utilise sur la page du dashboard principal des utilisateurs et administrateurs.
+
+====================================================================================
+*/
+
+// Variable de blocage pour éviter la double soumission du formulaire de création
 let soumissionEnCours = false;
 
+// Au chargement du DOM, chargement dynamique du dashboard et activation des fonctionnalités
 document.addEventListener("DOMContentLoaded", async () => {
   const content = document.getElementById("dashboardContent");
   try {
+    // Récupère le HTML du dashboard (adapté au rôle utilisateur)
     const response = await fetch("/esportify/back/pages/dashboard.php");
     const html = await response.text();
     content.innerHTML = html;
-    activerAttributionPoints();
-    activerActionsCartes();
+    activerAttributionPoints(); // Active les boutons d’attribution de points
+    activerActionsCartes();     // Active les actions sur les cartes événements
   } catch (err) {
     content.innerHTML = "<p>Erreur chargement dashboard.</p>";
     console.error("Erreur JS :", err);
   }
 
+  // Gestion de la soumission du formulaire de création d'événement
   const eventForm = document.getElementById("eventForm");
   if (eventForm) {
     eventForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (soumissionEnCours) return;
+      if (soumissionEnCours) return; // Bloque les soumissions multiples
       soumissionEnCours = true;
 
       const formData = new FormData(eventForm);
@@ -49,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+// Fonction pour recharger dynamiquement le dashboard (après création, suppression, etc.)
 async function actualiserDashboard() {
   try {
     const res = await fetch("/esportify/back/pages/dashboard.php");
@@ -62,6 +90,7 @@ async function actualiserDashboard() {
   }
 }
 
+// Activation des boutons "Attribuer les points"
 function activerAttributionPoints() {
   document.querySelectorAll("button[onclick^='openPointsModal']").forEach(btn => {
     const eventId = btn.getAttribute("onclick").match(/\d+/)[0];
@@ -69,6 +98,7 @@ function activerAttributionPoints() {
   });
 }
 
+// Activation des boutons d’action sur les cartes événement (démarrer, terminer, supprimer)
 function activerActionsCartes() {
   document.querySelectorAll("button[onclick^='startEvent']").forEach(btn => {
     const id = btn.getAttribute("onclick").match(/\d+/)[0];
@@ -84,6 +114,7 @@ function activerActionsCartes() {
   });
 }
 
+// Suppression d’un événement avec confirmation, via AJAX
 function deleteEvent(eventId) {
   if (!confirm("Supprimer cet événement ?")) return;
 
@@ -106,8 +137,7 @@ function deleteEvent(eventId) {
   });
 }
 
-
-
+// Démarrage d’un événement : change le statut via AJAX puis recharge la page
 function startEvent(eventId) {
   fetch('/esportify/back/controllers/update_event_status.php', {
     method: 'POST',
@@ -121,6 +151,7 @@ function startEvent(eventId) {
   });
 }
 
+// Clôture d’un événement : change le statut via AJAX puis recharge la page
 function endEvent(eventId) {
   fetch('/esportify/back/controllers/update_event_status.php', {
     method: 'POST',
@@ -134,7 +165,7 @@ function endEvent(eventId) {
   });
 }
 
-
+// Ouvre la modale d’attribution des points à la fin d’un événement
 function openPointsModal(id_event) {
   document.getElementById("pointsEventId").value = id_event;
 
@@ -164,10 +195,12 @@ function openPointsModal(id_event) {
     });
 }
 
+// Ferme la modale d’attribution des points
 function closePointsModal() {
   document.getElementById("pointsModal").style.display = "none";
 }
 
+// Calcul automatique des points selon la place attribuée par l’orga
 function calculerPoints(input, userId) {
   const pointsInput = document.getElementById("points_" + userId);
   const classement = parseInt(input.value);
@@ -180,6 +213,7 @@ function calculerPoints(input, userId) {
   pointsInput.value = points;
 }
 
+// Ouverture et fermeture de la modale de création d’événement
 function openEventModal() {
   document.getElementById("eventModal").style.display = "flex";
 }
@@ -189,7 +223,7 @@ function closeEventModal() {
 window.openEventModal = openEventModal;
 window.closeEventModal = closeEventModal;
 
-
+// Gestion de la soumission du formulaire d’attribution des points à la fin d’un événement
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("assignPointsForm");
   if (form) {

@@ -1,3 +1,49 @@
+/*
+====================================================================================
+    Fichier : style.css
+
+    Rôle :
+    Feuille de style principale du projet E.Sportify.
+    Définit l’apparence globale du site (polices, couleurs, disposition), le thème néon/dark mode,
+    la responsivité, et le style des composants UI majeurs : header, footer, navigation, dashboard, cards événements,
+    chat, galerie, modales, boutons, formulaires, badges, etc.
+
+    Fonctionnement :
+    - Réinitialisation minimale des marges et paddings pour homogénéité multi-navigateurs.
+    - Définition d’un layout responsive, grille principale sur index/dashboard, compatibilité mobile.
+    - Mise en place du fond sombre, des effets de bordure/bandeau néon, animation de fond dynamique.
+    - Styles spécifiques pour chaque composant principal : header, main, navigation, footer, cards, chat, modales, etc.
+    - Effets de survol, transitions, animations CSS (zoom, dégradé animé, flash, vibration, etc.).
+    - Couleurs adaptées à l’accessibilité (contraste fort, textes clairs sur fond sombre).
+    - Composants réutilisables : .neon-border, .modal, .card, .event-card, .badge, .register-btn, etc.
+    - Media queries intégrées (dans responsive.css) pour assurer l’affichage sur toutes tailles d’écran.
+
+    Interactions avec le reste du projet :
+    - Tous les fichiers HTML du projet référencent style.css comme feuille de style principale.
+    - style.css est complété par responsive.css pour l’adaptation mobile/tablette.
+    - Les classes et IDs sont attendues par les JS du projet pour l’injection dynamique et les manipulations DOM.
+    - Les variables et composants CSS sont homogènes avec la charte graphique du site (noir, bleu cyan, violet, accent néon).
+
+====================================================================================
+
+    Structure typique :
+    - Reset minimal
+    - Layout général (body, main, grid)
+    - Header et navigation
+    - Chrono et bandeau principal
+    - Sections grid (events, galerie, chat, etc.)
+    - Cards événements et dashboard
+    - Chat communautaire
+    - Galerie dynamique (carousel + mode admin)
+    - Modales (connexion, inscription, top10, admin)
+    - Boutons, badges, animations
+    - Footer branding & réseaux sociaux
+    - Divers : details, transitions, overrides
+    - Compatibilité avec responsive.css (mobile/tablette)
+
+====================================================================================
+*/
+
 
 /* Reset minimal */
 * {
@@ -826,6 +872,8 @@ color: white;
 .top10-list {
   padding-left: 1.5rem;
   font-size: 1rem;
+  background-color: white;
+  color: black;
 }
 
 .top10-list li {

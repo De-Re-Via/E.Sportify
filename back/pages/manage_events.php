@@ -1,8 +1,30 @@
 <?php
-/**
- * manage_events.php
- * Rôle : Affichage et traitement des événements en attente (modération)
- */
+/*
+====================================================================================
+    Fichier : manage_events.php
+
+    Rôle :
+    Ce fichier permet à un organisateur ou à l'administrateur de gérer les événements dont il a la responsabilité.
+    Il propose des fonctionnalités telles que la validation, la modification, la suppression ou la mise à jour de statut
+    d'un événement selon le rôle et les droits de l'utilisateur connecté.
+
+    Fonctionnement :
+    - Démarre la session PHP et vérifie l'authentification de l'utilisateur.
+    - Récupère le rôle et l'identifiant du membre connecté.
+    - Selon les paramètres reçus via POST, effectue différentes actions sur les événements :
+        - Validation
+        - Suppression
+        - Mise à jour de statut
+        - Autres actions éventuelles selon les droits
+    - Retourne une réponse JSON de succès ou d'échec.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Appelé généralement via AJAX ou soumission de formulaire depuis le dashboard, l'interface de gestion ou de modération.
+    - Fonctionne en complémentarité avec les scripts d'affichage et de sécurisation du projet.
+
+====================================================================================
+*/
 
 session_start();
 require_once("../config/database.php");
@@ -74,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["event_id"]) && isset(
     exit;
 }
 
-// === AFFICHAGE DES ÉVÉNEMENTS EN ATTENTE ===
+// AFFICHAGE DES ÉVÉNEMENTS EN ATTENTE 
 
 $stmt = $pdo->query("SELECT e.*, u.username FROM events e 
                      JOIN users u ON e.id_createur = u.id 

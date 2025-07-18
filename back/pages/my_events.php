@@ -1,12 +1,37 @@
 <?php
+
+/*
+====================================================================================
+    Fichier : my_events.php
+
+    Rôle :
+    Ce fichier permet à un utilisateur connecté de récupérer la liste de ses propres événements créés.
+    Il sert à afficher sur le dashboard ou l'espace personnel tous les événements dont l'utilisateur est l'auteur.
+
+    Fonctionnement :
+    - Démarre la session PHP et vérifie l'authentification.
+    - Récupère l'identifiant de l'utilisateur depuis la session.
+    - Interroge la base de données pour obtenir la liste des événements créés par cet utilisateur.
+    - Retourne le résultat au format JSON pour affichage dynamique.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Appelé généralement via AJAX lors du chargement du dashboard ou de la page "mes événements".
+    - Les événements retournés peuvent être filtrés ou gérés selon le rôle de l'utilisateur.
+
+====================================================================================
+*/
+
 session_start();
 require_once("../config/database.php");
 require_once("../includes/session.php");
 
 requireLogin(); // Redirige si non connecté
 
+// Récupération de l'identifiant de l'utilisateur
 $user_id = $_SESSION["user_id"];
 
+// Préparation de la requête SQL pour récupérer les événements créés par l'utilisateur
 $stmt = $pdo->prepare("SELECT * FROM events WHERE id_createur = ? ORDER BY date_event DESC");
 $stmt->execute([$user_id]);
 $events = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -1,4 +1,27 @@
 <?php
+
+/*
+====================================================================================
+    Fichier : get_event_info.php
+
+    Rôle :
+    Ce fichier permet de récupérer les informations détaillées d'un événement spécifique,
+    à partir de son identifiant, pour affichage sur la page de détails d'un événement
+    ou lors de l'ouverture d'un événement en pop-up.
+
+    Fonctionnement :
+    - Reçoit l'identifiant de l'événement via la méthode GET (paramètre 'event_id').
+    - Utilise la connexion à la base de données pour récupérer toutes les informations de l'événement.
+    - Retourne les informations de l'événement au format JSON.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Généralement appelé en AJAX ou lors du chargement dynamique d'une fiche événement (ex : event_live.html).
+    - Les données retournées sont exploitées pour afficher tous les détails d'un événement sélectionné.
+
+====================================================================================
+*/
+
 session_start();
 require_once('../config/database.php');
 

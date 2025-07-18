@@ -1,4 +1,29 @@
 <?php
+/*
+====================================================================================
+    Fichier : galerie.php
+
+    Rôle :
+    Ce fichier gère les fonctionnalités principales de la galerie d’images du site.
+    Il permet :
+      - D’uploader une image (proposée par un organisateur, soumise à validation admin)
+      - De valider ou refuser une image (action réservée à l’administrateur)
+      - De récupérer la liste des images validées pour affichage public
+
+    Fonctionnement :
+    - Détermine l’action à réaliser via le paramètre 'action' reçu en POST ou GET.
+    - Pour l’upload, contrôle l’authentification, vérifie et enregistre l’image dans le dossier approprié,
+      crée une entrée en base avec statut "en attente".
+    - Pour la validation/refus, vérifie le rôle administrateur puis met à jour le statut en base.
+    - Pour la récupération, retourne les images validées dans l’ordre inverse de leur ajout.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Est appelé via AJAX ou formulaire depuis le dashboard organisateur ou admin, et la page publique de la galerie.
+    - Les images validées sont affichées publiquement, les autres restent accessibles uniquement en back-office.
+
+====================================================================================
+*/
 require_once('../config/database.php');
 header('Content-Type: application/json');
 

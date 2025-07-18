@@ -1,5 +1,22 @@
+/*
+====================================================================================
+    Fichier : responsive.css
 
-/* Responsive - mobile (max-width: 480px) */
+    Rôle :
+    Cette feuille de style assure l’affichage optimal du site E.Sportify sur mobile, tablette et desktop.
+    Elle adapte le menu, la structure principale, les cards, le chrono, la discussion (chat) et la galerie,
+    pour garantir lisibilité et accessibilité sur tous les écrans.
+
+    Fonctionnement :
+    - Utilise les media queries pour ajuster layout, polices, tailles, marges et disposition.
+    - Rend la discussion (chat) et la galerie pleinement lisibles et utilisables sur petits écrans.
+    - Corrige l’apparence du chrono : le bandeau garde exactement le même style que sur desktop, sans modification de couleur, de padding, ni de structure.
+    - Complète style.css pour toutes les pages : index, dashboard, events, event_live, etc.
+
+====================================================================================
+*/
+
+/* ========================== MOBILE (max-width: 480px) ========================== */
 @media (max-width: 480px) {
   header {
     flex-direction: column;
@@ -42,19 +59,23 @@
     z-index: 10;
   }
 
+  /* Chrono - GARDE l'aspect desktop (pas de background jaune ni de réduction, 
+     les propriétés restent identiques à desktop) */
   .chrono-banner {
     width: 100%;
     text-align: center;
-    font-size: 0.9rem;
-    padding: 0.8rem 1rem;
+    font-size: 1.15rem;
+    padding: 1.2rem 1rem;
     margin: 1.5rem auto 1rem auto;
-    background: yellow;
-    color: black;
+    background: #181d20;
+    color: #ffee00;
     font-weight: bold;
-    border-radius: 0;
-    border-top: 5px solid white;
-    border-left: 5px solid white;
-    border-style: outset;
+    border-radius: 14px;
+    border-top: 5px solid #2d90f5;
+    border-bottom: 5px solid #ae00ff;
+    border-left: none;
+    border-right: none;
+    box-shadow: 0 0 10px #2d90f5, 0 0 24px #ae00ff;
     box-sizing: border-box;
   }
 
@@ -84,6 +105,82 @@
     width: 100%;
   }
 
+  /* ================== Discussion (chat) - mobile ================== */
+  .actualites, #chat-box, .chat-message, #chat-form {
+    width: 100% !important;
+    min-width: 0;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  #chat-box {
+    max-height: 210px;
+    overflow-y: auto;
+    padding: 0.6rem 0.3rem;
+    font-size: 0.97rem;
+    background: #14161a;
+    border-radius: 10px;
+  }
+  .chat-message {
+    padding: 0.55rem 0.3rem;
+    margin-bottom: 0.7rem;
+    border-radius: 7px;
+    background: rgba(35,35,35,0.85);
+    font-size: 0.96rem;
+    word-break: break-word;
+  }
+  #chat-form input, #chat-form button {
+    font-size: 1rem;
+    padding: 0.7rem;
+    width: 100%;
+    margin: 0.3rem 0;
+    border-radius: 7px;
+  }
+
+  /* ================== Galerie - mobile ================== */
+  .galerie {
+    width: 100% !important;
+    padding: 0.5rem 0 !important;
+    box-sizing: border-box;
+  }
+  .galerie img,
+  .carouselImage {
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: auto !important;
+    border-radius: 10px !important;
+    margin-bottom: 0.5rem;
+  }
+  #carousel-thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.18rem;
+    justify-content: center;
+    margin: 0.5rem 0;
+  }
+  .carousel-thumb {
+    width: 36px !important;
+    height: 36px !important;
+    margin: 2px !important;
+    border-radius: 7px;
+    object-fit: cover;
+  }
+  .admin-icon {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.9rem;
+    font-size: 1.25rem;
+  }
+
+  /* Modale galerie admin - plein écran mobile */
+  #adminGalerieModal .modal-content {
+    width: 100vw !important;
+    min-width: 0 !important;
+    border-radius: 0;
+    padding: 1.3rem 0.7rem;
+    font-size: 1rem;
+  }
+
+  /* Footer */
   footer {
     padding: 1rem 0.5rem;
   }
@@ -105,7 +202,7 @@
   }
 }
 
-/* Responsive - tablette (max-width: 992px) */
+/* ======================== TABLETTE (max-width: 992px) ======================== */
 @media (max-width: 992px) {
   header {
     flex-direction: column;
@@ -159,19 +256,22 @@
     text-decoration: none;
   }
 
+  /* Chrono - GARDE l'aspect desktop (identique mobile) */
   .chrono-banner {
     width: 100%;
     text-align: center;
-    font-size: 0.9rem;
-    padding: 0.8rem 1rem;
+    font-size: 1.15rem;
+    padding: 1.2rem 1rem;
     margin: 1.5rem auto 1rem auto;
-    background: yellow;
-    color: black;
+    background: #181d20;
+    color: #ffee00;
     font-weight: bold;
-    border-radius: 0;
-    border-top: 5px solid white;
-    border-left: 5px solid white;
-    border-style: outset;
+    border-radius: 14px;
+    border-top: 5px solid #2d90f5;
+    border-bottom: 5px solid #ae00ff;
+    border-left: none;
+    border-right: none;
+    box-shadow: 0 0 10px #2d90f5, 0 0 24px #ae00ff;
     box-sizing: border-box;
   }
 
@@ -202,6 +302,80 @@
     flex: 1 1 45%;
   }
 
+  /* ================== Discussion (chat) - tablette ================== */
+  .actualites, #chat-box, .chat-message, #chat-form {
+    width: 100% !important;
+    min-width: 0;
+    font-size: 1.04rem;
+    box-sizing: border-box;
+  }
+  #chat-box {
+    max-height: 270px;
+    overflow-y: auto;
+    padding: 0.8rem 0.4rem;
+    font-size: 1.04rem;
+    background: #181d20;
+    border-radius: 13px;
+  }
+  .chat-message {
+    padding: 0.7rem 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background: rgba(28,28,33,0.92);
+    font-size: 1.01rem;
+    word-break: break-word;
+  }
+  #chat-form input, #chat-form button {
+    font-size: 1.04rem;
+    padding: 0.95rem;
+    width: 100%;
+    margin: 0.4rem 0;
+    border-radius: 8px;
+  }
+
+  /* ================== Galerie - tablette ================== */
+  .galerie {
+    width: 100% !important;
+    padding: 0.8rem 0 !important;
+    box-sizing: border-box;
+  }
+  .galerie img,
+  .carouselImage {
+    width: 100% !important;
+    max-width: 96vw !important;
+    height: auto !important;
+    border-radius: 12px !important;
+    margin-bottom: 0.5rem;
+  }
+  #carousel-thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    justify-content: center;
+    margin: 0.6rem 0;
+  }
+  .carousel-thumb {
+    width: 44px !important;
+    height: 44px !important;
+    margin: 3px !important;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  .admin-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1.1rem;
+    font-size: 1.34rem;
+  }
+
+  #adminGalerieModal .modal-content {
+    width: 99vw !important;
+    min-width: 0 !important;
+    border-radius: 0;
+    padding: 1.6rem 1.2rem;
+    font-size: 1.08rem;
+  }
+
   footer {
     padding: 1rem 0.5rem;
     font-size: 0.8rem;
@@ -228,4 +402,11 @@
     flex-direction: row;
     gap: 1.5rem;
   }
+}
+
+/* Règles d’universalité : images et vidéos ne débordent jamais */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }

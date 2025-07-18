@@ -1,4 +1,26 @@
 <?php
+
+/*
+====================================================================================
+    Fichier : all_events.php
+
+    Rôle :
+    Ce fichier permet de récupérer la liste complète des événements, avec leurs principales informations,
+    pour affichage sur la page répertoire ou l'interface publique/admin du site.
+
+    Fonctionnement :
+    - Interroge la base de données pour récupérer tous les événements, en incluant le pseudo de l'auteur.
+    - Les événements sont ordonnés selon la date de création (du plus récent au plus ancien).
+    - Retourne la liste au format JSON.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Appelé généralement via AJAX lors du chargement du répertoire global des événements.
+    - Les données retournées permettent de générer dynamiquement la liste des événements sur le site.
+
+====================================================================================
+*/
+
 // Requêtes dynamiques pour la page d'accueil
 if ($_GET['mode'] ?? '' === 'soon') {
   require_once("../config/database.php");

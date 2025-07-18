@@ -1,4 +1,32 @@
 <?php
+
+/*
+====================================================================================
+    Fichier : dashboard.php
+
+    Rôle :
+    Ce fichier gère l'affichage dynamique du dashboard utilisateur. Il adapte le contenu
+    selon le rôle du membre connecté (joueur, organisateur, administrateur) et affiche
+    ses événements, participations, scores ou outils d'administration selon les droits.
+
+    Fonctionnement :
+    - Démarre la session PHP et vérifie la connexion de l'utilisateur.
+    - Récupère le rôle du membre et adapte l'affichage/les actions possibles.
+    - Récupère depuis la base de données les événements et informations pertinentes :
+        - Événements créés, participations, scores, etc.
+        - Pour les admins : liste globale des événements, outils de gestion.
+        - Pour les organisateurs : événements à gérer, validations, etc.
+    - Affiche les tableaux, listes, boutons/actions selon les droits.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Appelé lors du chargement du dashboard (dashboard.html ou équivalent).
+    - Utilise les informations de session pour la sécurité et l'affichage conditionnel.
+    - Fait appel à d'autres scripts pour les actions (validation, suppression, mise à jour d'événements...).
+
+====================================================================================
+*/
+
 session_start();
 require_once("../config/database.php");
 

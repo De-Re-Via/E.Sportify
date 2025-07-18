@@ -1,12 +1,40 @@
 <?php
+
+/*
+====================================================================================
+    Fichier : delete_event.php
+
+    Rôle :
+    Ce fichier permet la suppression d'un événement par l'auteur de l'événement, un organisateur ou l'administrateur.
+    Il reçoit l'identifiant de l'événement à supprimer, vérifie les droits de l'utilisateur connecté,
+    puis supprime l'événement de la base de données si l'utilisateur dispose des droits requis.
+
+    Fonctionnement :
+    - Reçoit via POST l'identifiant de l'événement à supprimer.
+    - Vérifie que l'utilisateur est connecté.
+    - Récupère les informations de l'événement pour identifier l'auteur.
+    - Vérifie que l'utilisateur connecté est soit l'auteur, soit organisateur, soit administrateur.
+    - Exécute la suppression de l'événement dans la base de données.
+    - Retourne une réponse JSON indiquant le succès ou l'échec de l'opération.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Est appelé depuis le dashboard ou la gestion d'événements, généralement en AJAX.
+    - Fonctionne avec la gestion centralisée des rôles utilisateurs.
+
+====================================================================================
+*/
+
 require_once("../config/database.php");
 session_start();
 
+// Vérification que l'utilisateur est connecté
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   echo "Méthode non autorisée.";
   exit;
 }
 
+// Vérification de la présence de l'identifiant de l'événement à supprimer dans la requête
 if (!isset($_POST["id_event"])) {
   echo "ID de l'événement manquant.";
   exit;

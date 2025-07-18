@@ -1,4 +1,28 @@
 <?php
+
+/*
+====================================================================================
+    Fichier : next_event.php
+
+    Rôle :
+    Ce fichier permet de récupérer le prochain événement à venir pour un utilisateur connecté,
+    en se basant sur la date des événements auxquels il est inscrit. Il est utilisé pour afficher
+    un rappel ou une information rapide sur la page d'accueil ou le dashboard de l'utilisateur.
+
+    Fonctionnement :
+    - Démarre la session PHP et vérifie l'authentification de l'utilisateur.
+    - Récupère l'identifiant de l'utilisateur depuis la session.
+    - Interroge la base de données pour obtenir l'événement à venir le plus proche auquel l'utilisateur est inscrit.
+    - Retourne les informations de l'événement au format JSON.
+
+    Interactions avec le reste du projet :
+    - Utilise la connexion PDO via database.php.
+    - Appelé via AJAX ou lors du chargement du dashboard, page d'accueil, etc.
+    - Permet d'afficher un rappel personnalisé à chaque membre connecté.
+
+====================================================================================
+*/
+
 require_once("../config/database.php");
 
 try {

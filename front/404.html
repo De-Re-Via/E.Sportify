@@ -1,0 +1,206 @@
+<!--
+====================================================================================
+    Fichier : 404.html
+
+    Rôle :
+    Cette page sert de page d’erreur personnalisée pour les liens invalides, pages inexistantes ou redirections fictives du site E.Sportify.
+    Elle fait également office de page d’informations légales et de présentation du projet (mentions légales, CGU, avertissement à la communauté).
+
+    Fonctionnement :
+    - S’affiche automatiquement lorsqu’une page non trouvée est demandée (erreur 404, ou lien inactif).
+    - Présente un message d’accueil explicitant la nature fictive du site et la vocation pédagogique du projet.
+    - Affiche un bloc d’avertissement “Page introuvable / Redirection” pour informer l’utilisateur de la cause de la redirection.
+    - Détaille les mentions légales obligatoires pour toute plateforme web, même fictive (éditeur, hébergement, propriété, RGPD, limitation de responsabilité…).
+    - Explique les CGU adaptées à un site de formation, la protection des données et la non-exploitation commerciale.
+    - Les liens vers les réseaux sociaux et le support sont inactifs et redirigent vers cette même page.
+    - Applique un style spécifique (bandeaux néon, responsive, dark mode, accent bleu/violet) pour cohérence avec le reste du site.
+
+    Interactions avec le reste du projet :
+    - Utilise les mêmes CSS et polices que les autres pages pour une identité graphique homogène.
+    - Le menu de navigation est injecté dynamiquement par navbar.js selon le statut de connexion utilisateur.
+    - Doit être référencée comme page 404 personnalisée dans la configuration du serveur (AlwaysData, Apache, etc.).
+    - Peut être liée depuis tous les liens “Mentions légales”, “Contact”, “CGU” du site.
+
+====================================================================================
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E.Sportify - Mentions légales & 404</title>
+  <meta name="description" content="E.Sportify - Plateforme e-sport fictive réalisée dans le cadre d'une formation web. Retrouvez les mentions légales, CGU, et le message à la communauté." />
+
+  <!-- SEO / réseaux sociaux -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Projet étudiant - Formation Développeur Web" />
+  <meta property="og:title" content="E.Sportify - Plateforme e-sport fictive" />
+  <meta property="og:description" content="Bienvenue sur E.Sportify, site fictif d'exercice de formation web. Toutes les infos, mentions légales et CGU ici." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://localhost/esportify/404.html" />
+  <meta property="og:image" content="https://localhost/esportify/assets/images/esportify-banner.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="E.Sportify - Plateforme e-sport fictive" />
+  <meta name="twitter:description" content="Bienvenue sur E.Sportify, toutes les infos sur le projet, mentions légales et CGU." />
+  <meta name="twitter:image" content="https://localhost/esportify/assets/images/esportify-banner.jpg" />
+  <link rel="icon" href="assets/images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- STYLE SPÉCIFIQUE À CETTE PAGE -->
+  <style>
+    body {
+        background: #000000;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto 30px auto;
+      padding: 2.5rem 1rem 2.2rem 1rem;
+      display: block !important;
+    }
+    .neon-border {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 2.2rem !important;
+      padding: 2.2rem 1.3rem 2.2rem 1.3rem;
+      border-radius: 18px;
+      background: #141421;
+      box-shadow: 0 4px 40px #00ffe080;
+      display: block;
+    }
+    .neon-border h2, .neon-border h3 {
+      margin-bottom: 1.1rem;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+    }
+    .neon-border h2 {
+      font-size: 2.1rem;
+      color: #2d90f5;
+    }
+    .neon-border h3 {
+      font-size: 1.45rem;
+      color: #ae00ff;
+    }
+    .neon-border p, .neon-border li {
+      font-size: 1.13rem;
+      line-height: 1.72;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .neon-border ol {
+      margin: 0 auto 0 auto;
+      padding-left: 1.5rem;
+      max-width: 90%;
+      text-align: left;
+    }
+    .neon-border b {
+      color: #2d90f5;
+      font-weight: bold;
+    }
+    .neon-border u {
+      color: #ae00ff;
+      text-decoration-thickness: 2px;
+    }
+    @media (max-width: 700px) {
+      main {
+        padding: 1rem 0.2rem 1.5rem 0.2rem;
+      }
+      .neon-border {
+        padding: 1.1rem 0.4rem 1.3rem 0.4rem;
+        font-size: 0.97rem;
+      }
+      .neon-border h2, .neon-border h3 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">E.S</div>
+    <h1 class="site-title">E.SPORTIFY</h1>
+    <nav class="main-nav" id="mainNav"></nav>
+    <div class="burger" onclick="toggleMenu()">☰</div>
+  </header>
+
+  <main>
+    <section class="neon-border" style="text-align:center;">
+      <h2>Bienvenue sur <span style="color:#2d90f5;">E.SPORTIFY</span> !</h2>
+      <p class="mt-3 mb-2" style="font-size:1.18em;">
+        Bienvenue sur E.Sportify, une plateforme e-sport <b>fictive</b> réalisée dans le cadre d'un exercice de mi-parcours de la formation <b>Développeur Web & Web Mobile</b>.<br>
+        Ce site n'est pas un service réel : il s'agit d'un projet d'entraînement pour valider des compétences en design, développement full-stack et gestion de projet web.<br>
+        Les fonctionnalités, événements, classements et profils sont <b>factices</b>.<br>
+        Merci à tous ceux qui parcourent ou testent ce site, ainsi qu'à la communauté pour son esprit bienveillant et passionné.<br>
+        <span style="color:#ae00ff;">Enjoy & Good luck sur vos futurs projets !</span>
+      </p>
+      <div style="font-size: 2.2rem;">🕹️🎮💻</div>
+    </section>
+
+    <section class="neon-border" style="text-align:center;">
+      <h3>Page introuvable / Redirection</h3>
+      <p>
+        La page demandée n'existe pas, ou le lien cliqué (réseaux sociaux, etc.) est fictif et redirige ici.<br>
+        Pour toute information, reportez-vous aux mentions légales ci-dessous.
+      </p>
+    </section>
+
+    <section class="neon-border">
+      <h3>Mentions légales</h3>
+      <p>
+        <b>Éditeur du site</b> : Ce site a été réalisé dans le cadre d’un exercice de formation par un étudiant en développement web.<br>
+        <b>Responsable de publication :</b> Projet de formation - ECF Développeur Web.<br>
+        <b>Hébergement :</b> Ce site est hébergé localement ou sur AlwaysData selon la version.<br>
+        <b>Contact :</b> Projet fictif sans support réel.
+      </p>
+    </section>
+
+    <section class="neon-border">
+      <h3>Conditions Générales d'Utilisation (CGU)</h3>
+      <ol>
+        <li>
+          <b>Nature du site :</b> E.Sportify est une <u>plateforme fictive</u> conçue exclusivement pour l'apprentissage et l'évaluation de compétences web. Aucune activité commerciale, inscription réelle, ou collecte de données personnelles n'est effectuée.
+        </li>
+        <li>
+          <b>Propriété intellectuelle :</b> L’ensemble des contenus (textes, images, logos, scripts) est utilisé à des fins pédagogiques uniquement. Toute ressemblance avec un service existant est fortuite.
+        </li>
+        <li>
+          <b>Données personnelles :</b>
+          Ce site utilise une base de données pour stocker les informations nécessaires à la gestion des utilisateurs, notamment les adresses e-mail et pseudonymes.<br>
+          Ces données sont protégées contre toute tentative d’injection ou de piratage grâce à des requêtes sécurisées et un développement respectant les bonnes pratiques (PDO, validation des entrées).<br>
+          Les informations sont hébergées sur les serveurs sécurisés de AlwaysData et ne sont utilisées que dans le cadre de la simulation des fonctionnalités du site.<br>
+          Aucun cookie tiers n’est utilisé à des fins publicitaires et aucune donnée n’est transmise ou exploitée commercialement.
+        </li>
+        <li>
+          <b>Limitation de responsabilité :</b> Les informations affichées n’ont aucune valeur contractuelle. L’éditeur ne pourra être tenu responsable d’aucune utilisation du site ou des données affichées.
+        </li>
+        <li>
+          <b>Liens externes et réseaux sociaux :</b> Tous les liens vers des réseaux sociaux ou services tiers sont inactifs et redirigent ici. Aucun partenariat n'est en place.
+        </li>
+        <li>
+          <b>Crédits images & sources :</b> Images et logos utilisés proviennent de banques libres de droit ou sont créés pour l’exercice.
+        </li>
+        <li>
+          <b>Contact :</b> Aucun service de support n’est assuré. Pour toute question, rapprochez-vous de votre référent pédagogique.
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <div class="socials">
+      <a href="404.html"><img src="assets/images/twitter.png" alt="Twitter" /></a>
+      <a href="404.html"><img src="assets/images/intagram.png" alt="Instagram" /></a>
+      <a href="404.html"><img src="assets/images/facebook.png" alt="Facebook" /></a>
+      <a href="404.html"><img src="assets/images/messenger.png" alt="Messenger" /></a>
+    </div>
+    <br>
+    <p><a href="404.html" style="color:inherit;text-decoration:none;cursor:pointer;"><b>E.SPORTIFY</b></a></p>
+  </footer>
+
+  <script src="assets/js/navbar.js"></script>
+</body>
+</html>

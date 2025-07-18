@@ -1,4 +1,31 @@
 <?php
+
+/*
+====================================================================================
+    Fichier : assign_points.php
+
+    Rôle :
+    Ce fichier gère l'attribution des points aux joueurs participants à un événement validé.
+    Il permet à l'organisateur ou à l'administrateur d'enregistrer le classement des participants
+    et de calculer automatiquement le nombre de points attribués selon la position dans le classement.
+
+    Fonctionnement :
+    - Reçoit via POST les données : identifiant de l'événement et un tableau associatif
+      des participants avec leur classement.
+    - Contrôle que l'utilisateur est connecté et possède le droit (organisateur ou admin)
+      d'attribuer les points pour l'événement en question.
+    - Calcule les points selon la règle définie (ex : 1er = 10 pts, 2e = 8 pts, 3e = 6 pts,
+      4e = 4 pts, 5e ou plus = 2 pts, absent/non classé = 0 pt).
+    - Insère ou met à jour les scores dans la table appropriée pour chaque joueur participant.
+
+    Interactions avec le reste du projet :
+    - Fichier appelé via AJAX ou formulaire par le dashboard organisateur ou admin.
+    - Utilise la connexion à la base de données définie dans database.php (inclusion en début de fichier).
+    - Les scores attribués sont utilisés dans le dashboard joueur et pour le classement général.
+
+====================================================================================
+*/
+
 session_start();
 require_once("../config/database.php");
 
